@@ -1,0 +1,51 @@
+Two new DynamoDB operations have been introduced for handling transactions:
+
+TransactWriteItems = PutItem, UpdateItem, and DeleteItem >>> Synchronous write operation that groups up to 25 action requests.
+TransactGetItems =  a batch operation that contains a read set, with one or more GetItem  >>> Atomically retrieves multiple items from one or more tables (but not from indexes) in a single account and region.
+
+================================================== AWS ================================================ 
+For example, imagine you are building a game where players can buy items with virtual coins:
+
+In the players table, each player has a number of coins and an inventory of purchased items.
+In the items table, each item has a price and is marked as available (or not) with a Boolean value.
+To purchase an item, you can now implement a single atomic transaction:
+
+First, check that the item is available and the player has the necessary coins.
+If those conditions are satisfied, the item is marked as not available and owned by the player.
+The purchased item is then added to the player inventory list.
+In JavaScript, using the AWS SDK for JavaScript in Node.js, you have code similar to this:
+
+data = await dynamoDb.transactWriteItems({
+    TransactItems: [
+        {
+            Update: {
+                TableName: 'items',
+                Key: { id: { S: itemId } },
+                ConditionExpression: 'available = :true',
+                UpdateExpression: 'set available = :false, ' +
+                    'ownedBy = :player',
+                ExpressionAttributeValues: {
+                    ':true': { BOOL: true },
+                    ':false': { BOOL: false },
+                    ':player': { S: playerId }
+                }
+            }
+        },
+        {
+            Update: {
+                TableName: 'players',
+                Key: { id: { S: playerId } },
+                ConditionExpression: 'coins >= :price',
+                UpdateExpression: 'set coins = coins - :price, ' +
+                    'inventory = list_append(inventory, :items)',
+                ExpressionAttributeValues: {
+                    ':items': { L: [{ S: itemId }] },
+                    ':price': { N: itemPrice.toString() }
+                }
+            }
+        }
+    ]
+}).promise();
+
+
+

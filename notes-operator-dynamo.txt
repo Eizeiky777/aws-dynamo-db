@@ -1,0 +1,23 @@
+Arithmetic operators
+
+Operator	Description
++	Add
+-	Subtract
+
+Comparison operators
+Operator	Description
+=	Equal to
+<>	Not Equal to
+>	Greater than
+<	Less than
+>=	Greater than or equal to
+<=	Less than or equal to
+
+Logical operators
+Operator	Description
+AND	TRUE if all the conditions separated by AND are TRUE
+BETWEEN	TRUE if the operand is within the range of comparisons
+IN	TRUE if the operand is equal to one of a list of expressions
+IS	TRUE if the operand is a given, PartiQL data type, including NULL or MISSING
+NOT	Reverses the value of a given Boolean expression
+OR	TRUE if any of the conditions separated by OR are TRUE

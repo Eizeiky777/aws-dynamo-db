@@ -1,0 +1,23 @@
+[
+    {
+        "id": 1,
+        "name": "Action",
+        "description": "Full Action Combat",
+        "attributes": {"type": 1},
+        "status": "1"
+    },    
+    {
+        "id": 2,
+        "name": "Anime",
+        "description": "Anime from Japan",
+        "attributes": {"type": 2},
+        "status": "1"
+    },    
+    {
+        "id": 3,
+        "name": "Drama",
+        "description": "all about drama movies",
+        "attributes": {"type": 3},
+        "status": "1"
+    }
+]
